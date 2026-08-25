@@ -1,0 +1,91 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  *, *::before, *::after {
+    box-sizing: border-box;
+  }
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  body {
+    @apply bg-gray-50 text-gray-900 font-sans;
+  }
+  :root.dark body {
+    @apply bg-gray-950 text-gray-100;
+  }
+  /* Scrollbar */
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { @apply bg-transparent; }
+  ::-webkit-scrollbar-thumb { @apply bg-gray-300 rounded-full; }
+  .dark ::-webkit-scrollbar-thumb { @apply bg-gray-600; }
+}
+
+@layer utilities {
+  .animation-delay-2000 { animation-delay: 2s; }
+  .animation-delay-4000 { animation-delay: 4s; }
+}
+
+/* Print Styles for Clean Document Exports */
+@media print {
+  html, body {
+    height: auto !important;
+    overflow: visible !important;
+    background: #ffffff !important;
+    color: #000000 !important;
+  }
+  
+  /* Hide all navigation, topbars, sidebars, buttons, criteria inputs, and headers */
+  aside, header, nav, button, form, .print\:hidden, .no-print, [role="navigation"] {
+    display: none !important;
+  }
+
+  /* Reset container layout restrictions */
+  div, main, body {
+    height: auto !important;
+    max-height: none !important;
+    overflow: visible !important;
+    position: static !important;
+    box-shadow: none !important;
+    border: none !important;
+  }
+
+  main {
+    padding: 0 !important;
+    margin: 0 !important;
+    width: 100% !important;
+  }
+
+  /* Table print optimization */
+  table {
+    width: 100% !important;
+    border-collapse: collapse !important;
+    margin-top: 16px !important;
+  }
+
+  th, td {
+    border: 1px solid #d1d5db !important;
+    padding: 8px 12px !important;
+    color: #000000 !important;
+    background: #ffffff !important;
+    font-size: 12px !important;
+  }
+
+  th {
+    background-color: #f3f4f6 !important;
+    font-weight: bold !important;
+    text-transform: uppercase !important;
+  }
+
+  tr {
+    page-break-inside: avoid !important;
+  }
+
+  .print\:block {
+    display: block !important;
+  }
+}
