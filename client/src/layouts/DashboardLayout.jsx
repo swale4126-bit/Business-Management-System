@@ -9,8 +9,10 @@ const DashboardLayout = () => {
       <Sidebar />
       <div className="flex flex-col flex-1 min-w-0 overflow-hidden">
         <Topbar />
-        <main className="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8 animate-fade-in">
-          <Outlet />
+        <main className="flex-1 overflow-y-auto">
+          <div className="px-4 sm:px-6 lg:px-8 py-6 max-w-screen-2xl mx-auto animate-fade-in">
+            <Outlet />
+          </div>
         </main>
       </div>
     </div>

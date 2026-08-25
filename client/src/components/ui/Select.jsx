@@ -13,15 +13,15 @@ const Select = React.forwardRef(({
   ...props
 }, ref) => {
   const baseSelect = [
-    'block w-full rounded-lg border text-sm transition-colors duration-150 py-2.5 px-3',
+    'block w-full rounded-xl border text-sm transition-colors duration-150 py-2.5 px-3.5',
     'bg-white text-gray-900',
-    'dark:bg-gray-800 dark:text-gray-100',
+    'dark:bg-gray-800/80 dark:text-gray-100',
     'focus:outline-none focus:ring-2 focus:ring-primary-500/40 focus:border-primary-500',
     'disabled:bg-gray-50 disabled:text-gray-500 disabled:cursor-not-allowed',
     'dark:disabled:bg-gray-900 dark:disabled:text-gray-600',
     error
       ? 'border-red-400 focus:border-red-500 focus:ring-red-400/40'
-      : 'border-gray-300 dark:border-gray-600',
+      : 'border-gray-300 dark:border-gray-700',
     'appearance-none',
   ].join(' ');
 

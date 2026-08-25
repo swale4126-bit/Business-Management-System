@@ -12,25 +12,28 @@ const Button = React.forwardRef(({
   ...props
 }, ref) => {
   const base = [
-    'inline-flex items-center justify-center font-medium rounded-lg',
+    'inline-flex items-center justify-center font-medium rounded-xl',
     'transition-all duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2',
     'disabled:opacity-50 disabled:cursor-not-allowed select-none',
+    'active:scale-[0.98]',
   ].join(' ');
 
   const variants = {
-    primary:   'bg-primary-600 text-white hover:bg-primary-700 focus-visible:ring-primary-500 shadow-sm',
-    secondary: 'bg-white text-gray-700 border border-gray-300 hover:bg-gray-50 focus-visible:ring-primary-500 shadow-sm dark:bg-gray-800 dark:text-gray-200 dark:border-gray-600 dark:hover:bg-gray-700',
-    danger:    'bg-red-600 text-white hover:bg-red-700 focus-visible:ring-red-500 shadow-sm',
+    primary:   'bg-primary-600 text-white hover:bg-primary-700 active:bg-primary-800 focus-visible:ring-primary-500 shadow-sm shadow-primary-600/20',
+    secondary: 'bg-white text-gray-700 border border-gray-300 hover:bg-gray-50 hover:border-gray-400 focus-visible:ring-primary-500 shadow-sm dark:bg-gray-800 dark:text-gray-200 dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-500',
+    danger:    'bg-red-600 text-white hover:bg-red-700 active:bg-red-800 focus-visible:ring-red-500 shadow-sm shadow-red-600/20',
     ghost:     'bg-transparent text-gray-600 hover:bg-gray-100 hover:text-gray-900 focus-visible:ring-gray-400 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-gray-100',
     outline:   'bg-transparent text-primary-600 border border-primary-600 hover:bg-primary-50 focus-visible:ring-primary-500 dark:text-primary-400 dark:border-primary-500 dark:hover:bg-primary-900/20',
-    success:   'bg-green-600 text-white hover:bg-green-700 focus-visible:ring-green-500 shadow-sm',
+    success:   'bg-emerald-600 text-white hover:bg-emerald-700 active:bg-emerald-800 focus-visible:ring-emerald-500 shadow-sm shadow-emerald-600/20',
+    warning:   'bg-amber-500 text-white hover:bg-amber-600 active:bg-amber-700 focus-visible:ring-amber-500 shadow-sm shadow-amber-500/20',
   };
 
   const sizes = {
     xs: 'px-2.5 py-1.5 text-xs gap-1',
-    sm: 'px-3 py-2 text-sm gap-1.5',
+    sm: 'px-3.5 py-2 text-sm gap-1.5',
     md: 'px-4 py-2.5 text-sm gap-2',
-    lg: 'px-5 py-3 text-base gap-2',
+    lg: 'px-5 py-3 text-base gap-2.5',
+    xl: 'px-6 py-3.5 text-base gap-2.5',
   };
 
   return (

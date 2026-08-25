@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,300;0,14..32,400;0,14..32,500;0,14..32,600;0,14..32,700;0,14..32,800;0,14..32,900&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -8,29 +8,114 @@
   *, *::before, *::after {
     box-sizing: border-box;
   }
+
   html {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
   }
+
   body {
     @apply bg-gray-50 text-gray-900 font-sans;
+    font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
   }
+
   :root.dark body {
     @apply bg-gray-950 text-gray-100;
   }
-  /* Scrollbar */
-  ::-webkit-scrollbar { width: 6px; height: 6px; }
+
+  /* Custom scrollbar */
+  ::-webkit-scrollbar { width: 5px; height: 5px; }
   ::-webkit-scrollbar-track { @apply bg-transparent; }
   ::-webkit-scrollbar-thumb { @apply bg-gray-300 rounded-full; }
-  .dark ::-webkit-scrollbar-thumb { @apply bg-gray-600; }
+  ::-webkit-scrollbar-thumb:hover { @apply bg-gray-400; }
+  .dark ::-webkit-scrollbar-thumb { @apply bg-gray-700; }
+  .dark ::-webkit-scrollbar-thumb:hover { @apply bg-gray-600; }
+
+  /* Focus ring polish */
+  [data-focus-visible]:focus-visible {
+    @apply outline-none ring-2 ring-primary-500 ring-offset-2;
+  }
+
+  /* Better input defaults */
+  input, textarea, select {
+    font-family: inherit;
+  }
+}
+
+@layer components {
+  /* Standard page card */
+  .page-card {
+    @apply bg-white dark:bg-gray-900 rounded-2xl border border-gray-200/80 dark:border-gray-800 shadow-sm overflow-hidden;
+  }
+
+  /* Card table header toolbar */
+  .card-toolbar {
+    @apply flex flex-col sm:flex-row sm:items-center gap-3 px-5 py-3.5 border-b border-gray-100 dark:border-gray-800 bg-gray-50/60 dark:bg-gray-800/30;
+  }
+
+  /* Consistent input field */
+  .form-input {
+    @apply block w-full rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 
+           text-sm text-gray-900 dark:text-white placeholder-gray-400 
+           px-3 py-2 
+           focus:outline-none focus:ring-2 focus:ring-primary-500/40 focus:border-primary-500 
+           transition-colors;
+  }
+
+  .form-input-search {
+    @apply form-input pl-9;
+  }
+
+  /* Consistent select field */
+  .form-select {
+    @apply block rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 
+           text-sm text-gray-900 dark:text-white 
+           px-3 py-2 
+           focus:outline-none focus:ring-2 focus:ring-primary-500/40 focus:border-primary-500 
+           cursor-pointer transition-colors;
+  }
+
+  /* Table action button pattern */
+  .table-action-btn {
+    @apply p-1.5 rounded-lg text-gray-400 transition-all duration-150;
+  }
+
+  .table-action-btn-view {
+    @apply table-action-btn hover:text-primary-600 hover:bg-primary-50 dark:hover:bg-primary-900/20;
+  }
+
+  .table-action-btn-edit {
+    @apply table-action-btn hover:text-amber-600 hover:bg-amber-50 dark:hover:bg-amber-900/20;
+  }
+
+  .table-action-btn-delete {
+    @apply table-action-btn hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20;
+  }
 }
 
 @layer utilities {
   .animation-delay-2000 { animation-delay: 2s; }
   .animation-delay-4000 { animation-delay: 4s; }
+
+  /* Gradient text */
+  .text-gradient-blue {
+    @apply bg-gradient-to-r from-blue-600 to-primary-500 bg-clip-text text-transparent;
+  }
+
+  /* Glass effect */
+  .glass {
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
+
+  .dark .glass {
+    background: rgba(17, 24, 39, 0.7);
+  }
 }
 
-/* Print Styles for Clean Document Exports */
+/* Print Styles */
 @media print {
   html, body {
     height: auto !important;
@@ -39,12 +124,10 @@
     color: #000000 !important;
   }
   
-  /* Hide all navigation, topbars, sidebars, buttons, criteria inputs, and headers */
   aside, header, nav, button, form, .print\:hidden, .no-print, [role="navigation"] {
     display: none !important;
   }
 
-  /* Reset container layout restrictions */
   div, main, body {
     height: auto !important;
     max-height: none !important;
@@ -60,7 +143,6 @@
     width: 100% !important;
   }
 
-  /* Table print optimization */
   table {
     width: 100% !important;
     border-collapse: collapse !important;

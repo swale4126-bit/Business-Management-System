@@ -1,7 +1,7 @@
- import React, { useState } from 'react';
+import React, { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
-import { HiPlus, HiEye, HiPencil, HiTrash, HiMagnifyingGlass, HiCube } from 'react-icons/hi2';
+import { HiPlus, HiEye, HiPencil, HiTrash, HiMagnifyingGlass, HiCube, HiCurrencyDollar, HiExclamationTriangle } from 'react-icons/hi2';
 import toast from 'react-hot-toast';
 import { getImageUrl } from '../../utils/image';
 
@@ -9,6 +9,7 @@ import PageHeader from '../../components/ui/PageHeader';
 import DataTable from '../../components/ui/DataTable';
 import Button from '../../components/ui/Button';
 import Badge from '../../components/ui/Badge';
+import StatsCard from '../../components/ui/StatsCard';
 import ConfirmDialog from '../../components/ui/ConfirmDialog';
 import productService from '../../services/productService';
 import categoryService from '../../services/categoryService';
@@ -50,7 +51,11 @@ export default function ProductsPage() {
     },
   });
 
-  const stockBadge = (qty, minStock) => {
+  const totalProductsCount = products.length;
+  const totalValuation = products.reduce((acc, p) => acc + (Number(p.buyingPrice || 0) * (p.quantity || 0)), 0);
+  const lowStockCount = products.filter(p => p.quantity <= (p.minStock || 10)).length;
+
+  const stockBadge = (qty, minStock = 10) => {
     if (qty <= 0)         return <Badge variant="red" dot>Out of Stock</Badge>;
     if (qty <= minStock)  return <Badge variant="amber" dot>Low Stock</Badge>;
     return <Badge variant="green" dot>In Stock</Badge>;
@@ -77,7 +82,7 @@ export default function ProductsPage() {
     { header: 'Product', render: (row) => {
       const imgPath = row.image || row.imageUrl;
       return (
-        <div className="flex items-center gap-3">===
+        <div className="flex items-center gap-3">
           {imgPath ? (
             <img 
               src={getImageUrl(imgPath)} 
@@ -86,14 +91,14 @@ export default function ProductsPage() {
                 e.currentTarget.style.display = 'none'; 
                 if (e.currentTarget.nextSibling) e.currentTarget.nextSibling.style.display = 'flex'; 
               }}
-              className="w-10 h-10 object-cover rounded-lg border border-gray-200 dark:border-gray-700 flex-shrink-0" 
+              className="w-10 h-10 object-cover rounded-xl border border-gray-200 dark:border-gray-700 flex-shrink-0" 
             />
           ) : null}
-          <div className={`w-10 h-10 rounded-lg bg-gray-100 dark:bg-gray-800 flex items-center justify-center flex-shrink-0 text-gray-400 dark:text-gray-500 border border-gray-200 dark:border-gray-700 ${imgPath ? 'hidden' : 'flex'}`}>
+          <div className={`w-10 h-10 rounded-xl bg-primary-50 dark:bg-primary-900/30 flex items-center justify-center flex-shrink-0 text-primary-600 dark:text-primary-400 border border-primary-100 dark:border-primary-800 ${imgPath ? 'hidden' : 'flex'}`}>
             <HiCube className="w-5 h-5" />
           </div>
           <div className="min-w-0">
-            <p className="font-medium text-gray-900 dark:text-white truncate">{row.name}</p>
+            <p className="font-semibold text-gray-900 dark:text-white truncate">{row.name}</p>
             <p className="text-xs text-gray-500 dark:text-gray-400 font-mono">SKU: {row.sku}</p>
           </div>
         </div>
@@ -125,9 +130,28 @@ export default function ProductsPage() {
         actions={<Button leftIcon={<HiPlus className="w-4 h-4" />} onClick={() => { setEditingProduct(null); setIsFormOpen(true); }}>Add Product</Button>}
       />
 
-      <div className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 overflow-hidden shadow-sm">
+      {/* KPI Cards */}
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
+        <StatsCard
+          title="Total Products in Catalog"
+          value={totalProductsCount.toString()}
+          icon={HiCube} iconColor="blue"
+        />
+        <StatsCard
+          title="Inventory Cost Valuation"
+          value={`$${totalValuation.toLocaleString(undefined, { minimumFractionDigits: 2 })}`}
+          icon={HiCurrencyDollar} iconColor="green"
+        />
+        <StatsCard
+          title="Low Stock Alerts"
+          value={lowStockCount.toString()}
+          icon={HiExclamationTriangle} iconColor="amber"
+        />
+      </div>
+
+      <div className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-200/80 dark:border-gray-800 overflow-hidden shadow-sm">
         {/* Search & Filtering Bar */}
-        <div className="p-4 border-b border-gray-100 dark:border-gray-800 flex flex-col sm:flex-row gap-3">
+        <div className="p-4 border-b border-gray-100 dark:border-gray-800 bg-gray-50/60 dark:bg-gray-800/20 flex flex-col sm:flex-row gap-3">
           <div className="relative flex-1">
             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
               <HiMagnifyingGlass className="w-4 h-4 text-gray-400" />
@@ -172,3 +196,4 @@ export default function ProductsPage() {
     </div>
   );
 }
+

@@ -1,14 +1,14 @@
 import React from 'react';
 
-const DataTable = ({ columns, data, isLoading }) => {
+const DataTable = ({ columns, data, isLoading, emptyMessage = 'No records found', emptySubMessage = 'There are no records to display yet.' }) => {
   if (isLoading) {
     return (
       <div className="overflow-x-auto">
         <table className="min-w-full">
-          <thead className="bg-gray-50 dark:bg-gray-800/50 border-b border-gray-200 dark:border-gray-700">
+          <thead className="bg-gray-50/80 dark:bg-gray-800/60 border-b border-gray-200 dark:border-gray-700">
             <tr>
               {columns.map((col, idx) => (
-                <th key={idx} className="px-6 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                <th key={idx} className="px-5 py-3 text-left text-[11px] font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-widest whitespace-nowrap">
                   {col.header}
                 </th>
               ))}
@@ -18,8 +18,8 @@ const DataTable = ({ columns, data, isLoading }) => {
             {[...Array(5)].map((_, i) => (
               <tr key={i}>
                 {columns.map((_, j) => (
-                  <td key={j} className="px-6 py-4">
-                    <div className="h-4 bg-gray-100 dark:bg-gray-800 rounded animate-pulse w-3/4" />
+                  <td key={j} className="px-5 py-3.5">
+                    <div className={`h-3.5 bg-gray-100 dark:bg-gray-800 rounded-full animate-pulse ${j === 0 ? 'w-2/3' : 'w-1/2'}`} />
                   </td>
                 ))}
               </tr>
@@ -32,14 +32,14 @@ const DataTable = ({ columns, data, isLoading }) => {
 
   if (!data || data.length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center py-16 text-center">
-        <div className="w-16 h-16 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center mb-4">
-          <svg className="w-8 h-8 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <div className="flex flex-col items-center justify-center py-16 text-center px-4">
+        <div className="w-14 h-14 rounded-2xl bg-gray-100 dark:bg-gray-800 flex items-center justify-center mb-4 shadow-inner">
+          <svg className="w-7 h-7 text-gray-350 dark:text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
           </svg>
         </div>
-        <p className="text-sm font-medium text-gray-900 dark:text-white mb-1">No records found</p>
-        <p className="text-sm text-gray-500 dark:text-gray-400">There are no records to display yet.</p>
+        <p className="text-sm font-semibold text-gray-800 dark:text-gray-200 mb-1">{emptyMessage}</p>
+        <p className="text-xs text-gray-400 dark:text-gray-500 max-w-xs">{emptySubMessage}</p>
       </div>
     );
   }
@@ -47,29 +47,29 @@ const DataTable = ({ columns, data, isLoading }) => {
   return (
     <div className="overflow-x-auto">
       <table className="min-w-full">
-        <thead className="bg-gray-50 dark:bg-gray-800/50 border-b border-gray-200 dark:border-gray-700">
+        <thead className="bg-gray-50/80 dark:bg-gray-800/60 border-b border-gray-200 dark:border-gray-700">
           <tr>
             {columns.map((col, idx) => (
               <th
                 key={idx}
                 scope="col"
-                className="px-6 py-3.5 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider whitespace-nowrap"
+                className="px-5 py-3 text-left text-[11px] font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-widest whitespace-nowrap"
               >
                 {col.header}
               </th>
             ))}
           </tr>
         </thead>
-        <tbody className="bg-white dark:bg-gray-900 divide-y divide-gray-100 dark:divide-gray-800">
+        <tbody className="bg-white dark:bg-gray-900 divide-y divide-gray-100 dark:divide-gray-800/80">
           {data.map((row, rowIdx) => (
             <tr
               key={rowIdx}
-              className="hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors duration-100"
+              className="hover:bg-gray-50/80 dark:hover:bg-gray-800/40 transition-colors duration-100"
             >
               {columns.map((col, colIdx) => (
                 <td
                   key={colIdx}
-                  className="px-6 py-4 text-sm text-gray-700 dark:text-gray-300 whitespace-nowrap"
+                  className="px-5 py-3.5 text-sm text-gray-700 dark:text-gray-300"
                 >
                   {col.render
                     ? col.render(row)
