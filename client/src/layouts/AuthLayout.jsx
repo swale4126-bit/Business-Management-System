@@ -2,44 +2,92 @@ import React from 'react';
 import { Outlet, Navigate } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 import { LoadingScreen } from '../components/ui/LoadingSpinner';
+import { 
+  HiUsers, HiUserGroup, HiTruck, HiCube, 
+  HiClipboardDocumentList, HiBanknotes, HiDocumentChartBar, HiChartPie 
+} from 'react-icons/hi2';
 
 const AuthLayout = () => {
   const { isAuthenticated, isLoading } = useAuth();
 
-  // Wait until the initial auth check is done before deciding
   if (isLoading) return <LoadingScreen />;
-
-  // If already logged in, bounce straight to the dashboard
   if (isAuthenticated) return <Navigate to="/dashboard" replace />;
 
+  const features = [
+    { name: 'Employees', icon: HiUsers },
+    { name: 'Customers', icon: HiUserGroup },
+    { name: 'Suppliers', icon: HiTruck },
+    { name: 'Products', icon: HiCube },
+    { name: 'Inventory', icon: HiClipboardDocumentList },
+    { name: 'Sales', icon: HiBanknotes },
+    { name: 'Reports', icon: HiDocumentChartBar },
+    { name: 'Analytics', icon: HiChartPie },
+  ];
+
   return (
-    <div className="min-h-screen relative flex items-center justify-center bg-gray-950 px-4 overflow-hidden">
-      {/* Gradient orbs */}
-      <div className="absolute top-0 left-1/4 w-96 h-96 bg-primary-600/20 rounded-full filter blur-3xl animate-blob" />
-      <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-purple-600/20 rounded-full filter blur-3xl animate-blob animation-delay-2000" />
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-blue-400/10 rounded-full filter blur-3xl animate-blob animation-delay-4000" />
-
-      {/* Grid pattern overlay */}
-      <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:64px_64px]" />
-
-      {/* Card */}
-      <div className="relative w-full max-w-md z-10">
-        {/* Brand mark */}
-        <div className="flex items-center justify-center gap-3 mb-8">
-          <div className="w-10 h-10 rounded-xl bg-primary-600 flex items-center justify-center shadow-lg shadow-primary-600/30">
+    <div className="min-h-screen flex bg-white dark:bg-gray-950 font-sans">
+      
+      {/* Left Column: Form Area */}
+      <div className="w-full lg:w-1/2 flex flex-col justify-center px-8 sm:px-16 lg:px-24 xl:px-32 relative">
+        
+        {/* Brand Logo - Absolute Top Left */}
+        <div className="absolute top-8 left-8 sm:left-16 lg:left-24 flex items-start gap-3">
+          <div className="w-10 h-10 rounded-xl bg-primary-600 flex items-center justify-center shadow-md flex-shrink-0">
             <span className="text-white font-bold text-lg">B</span>
           </div>
-          <span className="text-xl font-bold text-white tracking-tight">Business Management System</span>
+          <div className="flex flex-col">
+            <span className="font-extrabold text-gray-900 dark:text-white tracking-tight leading-tight">
+              Business Management System
+            </span>
+            <span className="text-xs font-semibold text-gray-500 uppercase tracking-widest mt-0.5">
+              Enterprise Business Platform
+            </span>
+          </div>
         </div>
 
-        <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl shadow-2xl p-8">
+        {/* Content Outlet (Login, Forgot Password, etc.) */}
+        <div className="w-full max-w-sm mx-auto">
           <Outlet />
         </div>
-
-        <p className="text-center text-xs text-gray-600 mt-6">
-          © {new Date().getFullYear()} Business Management System. All rights reserved.
-        </p>
+        
+        {/* Footer */}
+        <div className="absolute bottom-8 left-0 right-0 text-center">
+          <p className="text-xs text-gray-400">
+            © {new Date().getFullYear()} Business Management System. All rights reserved.
+          </p>
+        </div>
       </div>
+
+      {/* Right Column: Marketing / Testimonial (Hidden on mobile) */}
+      <div className="hidden lg:flex w-1/2 bg-gradient-to-br from-primary-900 via-primary-800 to-slate-900 p-16 flex-col justify-center relative overflow-hidden text-white">
+        
+        {/* Decorative background blur */}
+        <div className="absolute top-0 right-0 -mr-20 -mt-20 w-96 h-96 bg-primary-500/20 rounded-full filter blur-3xl" />
+        <div className="absolute bottom-0 left-0 -ml-20 -mb-20 w-96 h-96 bg-blue-400/20 rounded-full filter blur-3xl" />
+
+        <div className="relative z-10 max-w-xl mx-auto space-y-8">
+          <h1 className="text-4xl xl:text-5xl font-extrabold leading-[1.15] tracking-tight">
+            Manage your business from one powerful platform.
+          </h1>
+          
+          <p className="text-lg text-primary-100 font-medium leading-relaxed max-w-md">
+            Centralize employees, customers, suppliers, products, inventory, sales, reports, and analytics in one place.
+          </p>
+
+          {/* Integration / Feature Logos */}
+          <div className="pt-10 border-t border-primary-700/60">
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-y-6 gap-x-4 text-primary-200">
+              {features.map(({ name, icon: Icon }) => (
+                <div key={name} className="flex items-center gap-2">
+                  <Icon className="w-5 h-5 text-primary-400" />
+                  <span className="text-sm font-semibold tracking-wide">{name}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+      
     </div>
   );
 };

@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useForm } from 'react-hook-form';
 import { useAuth } from '../../hooks/useAuth';
 import authService from '../../services/authService';
 import Input from '../../components/ui/Input';
@@ -52,10 +51,10 @@ export default function ForceChangePasswordPage() {
   };
 
   return (
-    <div className="animate-fade-in">
-      <div className="mb-8 text-center">
-        <h1 className="text-2xl font-bold text-white mb-2">Change Default Password</h1>
-        <p className="text-gray-400">
+    <div className="animate-fade-in w-full">
+      <div className="mb-8">
+        <h1 className="text-3xl font-extrabold text-gray-900 dark:text-white tracking-tight mb-2">Change Password</h1>
+        <p className="text-sm text-gray-500 dark:text-gray-400">
           Welcome {user?.firstName}! For security reasons, you must change your temporary password before accessing the system.
         </p>
       </div>
@@ -69,7 +68,6 @@ export default function ForceChangePasswordPage() {
           onChange={handleChange}
           required
           placeholder="Enter your temporary password"
-          className="bg-white/5 border-white/10 text-white placeholder-gray-500 focus:border-primary-500"
         />
 
         <Input
@@ -80,7 +78,6 @@ export default function ForceChangePasswordPage() {
           onChange={handleChange}
           required
           placeholder="At least 6 characters"
-          className="bg-white/5 border-white/10 text-white placeholder-gray-500 focus:border-primary-500"
         />
 
         <Input
@@ -91,12 +88,12 @@ export default function ForceChangePasswordPage() {
           onChange={handleChange}
           required
           placeholder="Repeat new password"
-          className="bg-white/5 border-white/10 text-white placeholder-gray-500 focus:border-primary-500"
         />
 
         <Button
           type="submit"
-          className="w-full"
+          className="w-full mt-4 font-bold shadow-md"
+          size="lg"
           isLoading={isLoading}
         >
           Update Password & Continue

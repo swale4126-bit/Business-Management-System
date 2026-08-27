@@ -38,17 +38,17 @@ const ForgotPasswordPage = () => {
 
   if (submitted) {
     return (
-      <div className="flex flex-col items-center text-center animate-fade-in py-2">
-        <div className="w-14 h-14 rounded-full bg-green-500/20 text-green-400 flex items-center justify-center mb-4">
-          <HiCheckCircle className="w-8 h-8" />
+      <div className="flex flex-col items-center text-center animate-fade-in py-4 w-full">
+        <div className="w-16 h-16 rounded-full bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400 flex items-center justify-center mb-6 shadow-sm">
+          <HiCheckCircle className="w-10 h-10" />
         </div>
-        <h2 className="text-xl font-bold text-white mb-2">Check your email</h2>
-        <p className="text-xs text-gray-300 mb-6 leading-relaxed max-w-xs">
-          If an account exists for this email, you will receive reset instructions.
+        <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">Check your email</h2>
+        <p className="text-sm text-gray-500 dark:text-gray-400 mb-8 leading-relaxed max-w-sm">
+          If an account exists for this email, you will receive reset instructions shortly.
         </p>
         <Link 
           to="/login" 
-          className="inline-flex items-center gap-1.5 text-xs font-semibold text-primary-400 hover:text-primary-300 transition-colors"
+          className="inline-flex items-center gap-2 text-sm font-bold text-primary-600 dark:text-primary-400 hover:text-primary-700 transition-colors"
         >
           <HiArrowLeft className="w-4 h-4" /> Back to Login
         </Link>
@@ -57,13 +57,13 @@ const ForgotPasswordPage = () => {
   }
 
   return (
-    <div className="animate-fade-in">
-      <div className="mb-6">
-        <h1 className="text-2xl font-extrabold text-white tracking-tight">Forgot Password</h1>
-        <p className="mt-1 text-xs text-gray-400">Enter your account email to receive reset instructions</p>
+    <div className="animate-fade-in w-full">
+      <div className="mb-8">
+        <h1 className="text-3xl font-extrabold text-gray-900 dark:text-white tracking-tight">Forgot Password</h1>
+        <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">Enter your account email to receive reset instructions</p>
       </div>
 
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4" noValidate>
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-5" noValidate>
         <Input
           label="Email Address"
           type="email"
@@ -71,7 +71,6 @@ const ForgotPasswordPage = () => {
           iconLeft={HiEnvelope}
           disabled={isLoading}
           error={errors.email?.message}
-          className="bg-white/10 text-white placeholder-gray-500 border-white/10 focus:border-primary-500 focus:ring-primary-500/40"
           {...register('email')}
         />
         <Button 
@@ -80,16 +79,16 @@ const ForgotPasswordPage = () => {
           size="lg" 
           isLoading={isLoading} 
           disabled={isLoading}
-          className="w-full mt-2 font-semibold text-sm shadow-lg shadow-primary-600/30"
+          className="w-full mt-4 font-bold text-sm shadow-md"
         >
           {isLoading ? 'Sending Instructions...' : 'Send Reset Instructions'}
         </Button>
       </form>
 
-      <div className="mt-6 text-center">
+      <div className="mt-8 text-center">
         <Link 
           to="/login" 
-          className="inline-flex items-center justify-center gap-1.5 text-xs font-medium text-gray-400 hover:text-gray-200 transition-colors"
+          className="inline-flex items-center justify-center gap-2 text-sm font-semibold text-gray-500 hover:text-gray-900 dark:hover:text-white transition-colors"
         >
           <HiArrowLeft className="w-4 h-4" /> Back to Login
         </Link>

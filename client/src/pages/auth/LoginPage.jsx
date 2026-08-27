@@ -51,14 +51,14 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="animate-fade-in">
+    <div className="animate-fade-in w-full">
       {/* Heading */}
-      <div className="mb-6">
-        <h1 className="text-2xl font-extrabold text-white tracking-tight">Sign in to your account</h1>
-        <p className="mt-1 text-xs text-gray-400">Enter your credentials to access your Business Management workspace</p>
+      <div className="mb-8">
+        <h1 className="text-3xl font-extrabold text-gray-900 dark:text-white tracking-tight">Welcome Back!</h1>
+        <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">Sign in to access your dashboard and continue managing your business.</p>
       </div>
 
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4" noValidate>
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-5" noValidate>
         <Input
           label="Email Address"
           type="email"
@@ -67,7 +67,6 @@ const LoginPage = () => {
           autoComplete="email"
           disabled={isLoading}
           error={errors.email?.message}
-          className="bg-white/10 text-white placeholder-gray-500 border-white/10 focus:border-primary-500 focus:ring-primary-500/40"
           {...register('email')}
         />
 
@@ -80,13 +79,13 @@ const LoginPage = () => {
             autoComplete="current-password"
             disabled={isLoading}
             error={errors.password?.message}
-            className="bg-white/10 text-white placeholder-gray-500 border-white/10 focus:border-primary-500 focus:ring-primary-500/40 pr-10"
+            className="pr-10"
             {...register('password')}
           />
           <button
             type="button"
             onClick={() => setShowPassword(!showPassword)}
-            className="absolute right-3 top-9 text-gray-400 hover:text-gray-200 transition-colors"
+            className="absolute right-3 top-9 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 transition-colors"
             tabIndex={-1}
           >
             {showPassword ? <HiEyeSlash className="w-4 h-4" /> : <HiEye className="w-4 h-4" />}
@@ -98,14 +97,14 @@ const LoginPage = () => {
             <input
               type="checkbox"
               disabled={isLoading}
-              className="w-4 h-4 rounded border-white/20 bg-white/10 text-primary-600 focus:ring-primary-500 cursor-pointer"
+              className="w-4 h-4 rounded border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-primary-600 focus:ring-primary-500 cursor-pointer"
               {...register('rememberMe')}
             />
-            <span className="text-xs text-gray-300">Remember Me</span>
+            <span className="text-sm text-gray-600 dark:text-gray-300 font-medium">Remember Me</span>
           </label>
           <Link
             to="/forgot-password"
-            className="text-xs font-semibold text-primary-400 hover:text-primary-300 transition-colors"
+            className="text-sm font-bold text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 transition-colors"
           >
             Forgot Password?
           </Link>
@@ -117,7 +116,7 @@ const LoginPage = () => {
           size="lg"
           isLoading={isLoading}
           disabled={isLoading}
-          className="w-full mt-3 font-semibold text-sm shadow-lg shadow-primary-600/30"
+          className="w-full mt-4 font-bold text-sm shadow-md"
         >
           {isLoading ? 'Signing in...' : 'Sign In'}
         </Button>

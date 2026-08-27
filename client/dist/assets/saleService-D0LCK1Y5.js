@@ -1,1 +1,0 @@
-import{C as e}from"./index-BHoCQA-x.js";const n={getAll:async s=>{var t;const a=await e.get("/sales",{params:s});return((t=a.data)==null?void 0:t.data)??a.data},getById:async s=>(await e.get(`/sales/${s}`)).data,create:async s=>(await e.post("/sales",s)).data};export{n as s};

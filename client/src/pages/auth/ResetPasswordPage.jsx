@@ -54,10 +54,10 @@ const ResetPasswordPage = () => {
 
   if (!token) {
     return (
-      <div className="text-center animate-fade-in py-4">
-        <h2 className="text-xl font-bold text-white mb-2">Invalid Reset Link</h2>
-        <p className="text-xs text-gray-400 mb-6">This password reset link is missing a valid security token.</p>
-        <Link to="/forgot-password" className="inline-flex items-center gap-1.5 text-xs text-primary-400 hover:text-primary-300 font-semibold">
+      <div className="text-center animate-fade-in py-8 w-full">
+        <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">Invalid Reset Link</h2>
+        <p className="text-sm text-gray-500 dark:text-gray-400 mb-8">This password reset link is missing a valid security token.</p>
+        <Link to="/forgot-password" className="inline-flex items-center gap-2 text-sm text-primary-600 hover:text-primary-700 font-bold">
           Request a new link
         </Link>
       </div>
@@ -65,13 +65,13 @@ const ResetPasswordPage = () => {
   }
 
   return (
-    <div className="animate-fade-in">
-      <div className="mb-6">
-        <h1 className="text-2xl font-extrabold text-white tracking-tight">Set New Password</h1>
-        <p className="mt-1 text-xs text-gray-400">Choose a strong new password for your account</p>
+    <div className="animate-fade-in w-full">
+      <div className="mb-8">
+        <h1 className="text-3xl font-extrabold text-gray-900 dark:text-white tracking-tight">Set New Password</h1>
+        <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">Choose a strong new password for your account</p>
       </div>
 
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4" noValidate>
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-5" noValidate>
         <div className="relative">
           <Input
             label="New Password"
@@ -81,13 +81,13 @@ const ResetPasswordPage = () => {
             disabled={isLoading}
             error={errors.password?.message}
             hint="8-12 chars with uppercase, lowercase, number & special char"
-            className="bg-white/10 text-white placeholder-gray-500 border-white/10 focus:border-primary-500 focus:ring-primary-500/40 pr-10"
+            className="pr-10"
             {...register('password')}
           />
           <button
             type="button"
             onClick={() => setShowPassword(!showPassword)}
-            className="absolute right-3 top-9 text-gray-400 hover:text-gray-200 transition-colors"
+            className="absolute right-3 top-9 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 transition-colors"
             tabIndex={-1}
           >
             {showPassword ? <HiEyeSlash className="w-4 h-4" /> : <HiEye className="w-4 h-4" />}
@@ -101,7 +101,6 @@ const ResetPasswordPage = () => {
           iconLeft={HiLockClosed}
           disabled={isLoading}
           error={errors.confirmPassword?.message}
-          className="bg-white/10 text-white placeholder-gray-500 border-white/10 focus:border-primary-500 focus:ring-primary-500/40"
           {...register('confirmPassword')}
         />
 
@@ -111,14 +110,14 @@ const ResetPasswordPage = () => {
           size="lg"
           isLoading={isLoading}
           disabled={isLoading}
-          className="w-full mt-2 font-semibold text-sm shadow-lg shadow-primary-600/30"
+          className="w-full mt-4 font-bold text-sm shadow-md"
         >
           {isLoading ? 'Resetting Password...' : 'Reset Password'}
         </Button>
       </form>
 
-      <div className="mt-6 text-center">
-        <Link to="/login" className="inline-flex items-center justify-center gap-1.5 text-xs text-gray-400 hover:text-gray-200 transition-colors">
+      <div className="mt-8 text-center">
+        <Link to="/login" className="inline-flex items-center justify-center gap-2 text-sm font-semibold text-gray-500 hover:text-gray-900 dark:hover:text-white transition-colors">
           <HiArrowLeft className="w-4 h-4" /> Back to Login
         </Link>
       </div>

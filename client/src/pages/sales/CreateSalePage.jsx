@@ -255,7 +255,7 @@ export default function CreateSalePage() {
   return (
     <div className="space-y-6 animate-fade-in pb-12">
       {/* POS Top Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white dark:bg-gray-900 p-4 rounded-2xl border border-gray-200 dark:border-gray-800 shadow-sm">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white dark:bg-gray-900 p-4 rounded-2xl border border-gray-200/80 dark:border-gray-800 shadow-sm">
         <div className="flex items-center gap-3">
           <Button variant="ghost" size="sm" onClick={() => navigate('/sales')}>
             <HiArrowLeft className="w-5 h-5" />
@@ -291,7 +291,7 @@ export default function CreateSalePage() {
         <div className="lg:col-span-7 space-y-4">
           
           {/* Search & Category Filter */}
-          <div className="bg-white dark:bg-gray-900 p-4 rounded-2xl border border-gray-200 dark:border-gray-800 shadow-sm space-y-3">
+          <div className="bg-white dark:bg-gray-900 p-4 rounded-2xl border border-gray-200/80 dark:border-gray-800 shadow-sm space-y-3">
             <div className="relative">
               <Input
                 placeholder="Search products by name, SKU, or barcode..."
@@ -338,7 +338,7 @@ export default function CreateSalePage() {
               ))}
             </div>
           ) : filteredProducts.length === 0 ? (
-            <div className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 p-12 text-center text-gray-500 dark:text-gray-400">
+            <div className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-200/80 dark:border-gray-800 p-12 text-center text-gray-500 dark:text-gray-400">
               <HiCube className="w-12 h-12 mx-auto mb-3 text-gray-300 dark:text-gray-600" />
               <p className="font-semibold text-gray-900 dark:text-white">No products found</p>
               <p className="text-xs mt-1">Try adjusting your search query or category filter.</p>
@@ -404,7 +404,7 @@ export default function CreateSalePage() {
 
         {/* Right Column: Checkout & Order Summary (5 Cols) */}
         <div className="lg:col-span-5 space-y-4">
-          <div className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 p-5 shadow-sm space-y-5">
+          <div className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-200/80 dark:border-gray-800 p-5 shadow-sm space-y-5">
             
             {/* Customer Selector */}
             <div>
