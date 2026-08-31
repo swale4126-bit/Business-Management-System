@@ -25,7 +25,7 @@ const Badge = ({ children, variant = 'gray', dot = false, size = 'sm', className
   };
 
   return (
-    <span className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-medium ring-1 ring-inset ${variants[variant] || variants.gray} ${className}`}>
+    <span className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-medium ring-1 ring-inset cursor-default select-none ${variants[variant] || variants.gray} ${className}`}>
       {dot && <span className={`h-1.5 w-1.5 rounded-full flex-shrink-0 ${dotColors[variant] || 'bg-gray-400'}`} />}
       {children}
     </span>

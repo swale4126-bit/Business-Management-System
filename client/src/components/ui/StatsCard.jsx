@@ -16,7 +16,7 @@ const StatsCard = ({ title, value, icon: Icon, trend, iconColor = 'blue', descri
   const isNegative = trend && trend.startsWith('-');
 
   return (
-    <div className="group relative bg-white dark:bg-gray-900 rounded-2xl border border-gray-200/80 dark:border-gray-800 p-5 shadow-sm hover:shadow-md hover:border-gray-300 dark:hover:border-gray-700 transition-all duration-200 overflow-hidden">
+    <div className="group relative bg-white dark:bg-gray-900 rounded-2xl border border-gray-200/80 dark:border-gray-800 p-5 shadow-sm hover:shadow-md hover:border-gray-300 dark:hover:border-gray-700 transition-all duration-200 overflow-hidden cursor-default">
       {/* Subtle top gradient accent bar */}
       <div className={`absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r ${config.accent} to-transparent opacity-60`} />
 

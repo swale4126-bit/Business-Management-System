@@ -3,7 +3,7 @@ import React from 'react';
 const DataTable = ({ columns, data, isLoading, emptyMessage = 'No records found', emptySubMessage = 'There are no records to display yet.' }) => {
   if (isLoading) {
     return (
-      <div className="overflow-x-auto">
+      <div className="overflow-x-auto cursor-default">
         <table className="min-w-full">
           <thead className="bg-gray-50/80 dark:bg-gray-800/60 border-b border-gray-200 dark:border-gray-700">
             <tr>
@@ -45,7 +45,7 @@ const DataTable = ({ columns, data, isLoading, emptyMessage = 'No records found'
   }
 
   return (
-    <div className="overflow-x-auto">
+    <div className="overflow-x-auto cursor-default">
       <table className="min-w-full">
         <thead className="bg-gray-50/80 dark:bg-gray-800/60 border-b border-gray-200 dark:border-gray-700">
           <tr>

@@ -76,7 +76,7 @@ const Sidebar = () => {
       <aside className={[
         'print:hidden fixed inset-y-0 left-0 z-50 flex flex-col bg-[#0f1623] text-slate-100',
         'border-r border-white/5',
-        'transition-all duration-300 ease-in-out select-none',
+        'transition-all duration-300 ease-in-out cursor-default select-none',
         'md:relative md:translate-x-0',
         collapsed ? 'w-[68px]' : 'w-64',
         isOpen ? 'translate-x-0' : '-translate-x-full',

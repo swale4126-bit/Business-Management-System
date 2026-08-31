@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
@@ -6,12 +6,14 @@ import { useAuth } from '../../hooks/useAuth';
 import { Link, useNavigate } from 'react-router-dom';
 import Input from '../../components/ui/Input';
 import Button from '../../components/ui/Button';
-import { HiEnvelope, HiLockClosed, HiEye, HiEyeSlash } from 'react-icons/hi2';
-import toast from 'react-hot-toast';
+import { HiEnvelope, HiLockClosed, HiEye, HiEyeSlash, HiExclamationCircle } from 'react-icons/hi2';
 
 const loginSchema = z.object({
-  email: z.string().email({ message: 'Invalid email address' }),
-  password: z.string().min(1, { message: 'Password is required' }),
+  email: z.string()
+    .min(1, { message: 'Please enter your email address.' })
+    .email({ message: 'Invalid email address.' }),
+  password: z.string()
+    .min(1, { message: 'Please enter your password.' }),
   rememberMe: z.boolean().optional(),
 });
 
@@ -20,20 +22,33 @@ const LoginPage = () => {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [authError, setAuthError] = useState('');
 
-  const { register, handleSubmit, formState: { errors } } = useForm({
+  const { register, handleSubmit, watch, formState: { errors } } = useForm({
     resolver: zodResolver(loginSchema),
     defaultValues: {
       rememberMe: false,
     },
   });
 
+  const emailValue = watch('email');
+  const passwordValue = watch('password');
+
+  // Clear auth error when user starts typing again
+  useEffect(() => {
+    if (authError) {
+      setAuthError('');
+    }
+  }, [emailValue, passwordValue]); // eslint-disable-line react-hooks/exhaustive-deps
+
   const onSubmit = async (data) => {
     if (isLoading) return; // Prevent duplicate submissions
+    setAuthError('');
+    
     try {
       setIsLoading(true);
       const loggedInUser = await login(data.email, data.password, !!data.rememberMe);
-      toast.success('Signed in successfully');
+      
       if (loggedInUser?.mustChangePassword) {
         navigate('/force-change-password', { replace: true });
       } else {
@@ -41,9 +56,12 @@ const LoginPage = () => {
       }
     } catch (error) {
       if (!error.response) {
-        toast.error('Network error or server unreachable');
+        setAuthError('Network error or server unreachable.');
       } else {
-        toast.error(error.response.data?.message || 'Invalid email or password');
+        // Use generic message for 401s per requirements, though backend already does this
+        const status = error.response.status;
+        const msg = error.response.data?.message || 'Invalid email or password.';
+        setAuthError(status === 401 || status === 403 ? msg : 'An unexpected error occurred.');
       }
     } finally {
       setIsLoading(false);
@@ -57,6 +75,13 @@ const LoginPage = () => {
         <h1 className="text-3xl font-extrabold text-gray-900 dark:text-white tracking-tight">Welcome Back!</h1>
         <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">Sign in to access your dashboard and continue managing your business.</p>
       </div>
+
+      {authError && (
+        <div className="mb-6 p-4 rounded-xl bg-red-50 border border-red-200 dark:bg-red-900/20 dark:border-red-900/50 flex items-start gap-3 animate-fade-in">
+          <HiExclamationCircle className="w-5 h-5 text-red-500 mt-0.5 flex-shrink-0" />
+          <p className="text-sm font-medium text-red-800 dark:text-red-200">{authError}</p>
+        </div>
+      )}
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-5" noValidate>
         <Input

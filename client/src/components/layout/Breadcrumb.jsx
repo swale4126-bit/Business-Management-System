@@ -27,7 +27,7 @@ const Breadcrumb = () => {
   if (pathnames.length === 0) return null;
 
   return (
-    <nav className="flex items-center text-xs" aria-label="Breadcrumb">
+    <nav className="flex items-center text-xs cursor-default select-none" aria-label="Breadcrumb">
       <ol className="flex items-center space-x-1.5 font-medium">
         <li>
           <NavLink to="/" className="text-gray-400 dark:text-gray-500 hover:text-primary-600 dark:hover:text-primary-400 transition-colors flex items-center gap-1">

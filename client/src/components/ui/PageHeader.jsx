@@ -5,7 +5,7 @@ const PageHeader = ({ title, description, subtitle, actions, action, badge, icon
   const actionContent = actions || action;
 
   return (
-    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
+    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6 cursor-default">
       <div className="min-w-0 flex items-start gap-3.5">
         {Icon && (
           <div className="flex-shrink-0 w-10 h-10 rounded-xl bg-primary-600/10 dark:bg-primary-500/15 text-primary-600 dark:text-primary-400 flex items-center justify-center mt-0.5 ring-1 ring-primary-500/20">

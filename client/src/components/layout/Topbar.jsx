@@ -21,7 +21,7 @@ const Topbar = () => {
   const initials = `${user?.firstName?.[0] || user?.name?.[0] || 'U'}${user?.lastName?.[0] || ''}`.toUpperCase();
 
   return (
-    <header className="print:hidden sticky top-0 z-20 h-14 bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800/80 flex items-center px-4 sm:px-5 gap-3 flex-shrink-0">
+    <header className="print:hidden sticky top-0 z-20 h-14 bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800/80 flex items-center px-4 sm:px-5 gap-3 flex-shrink-0 cursor-default select-none">
       {/* Mobile menu toggle */}
       <button
         onClick={toggleSidebar}
