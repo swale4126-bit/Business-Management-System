@@ -39,28 +39,37 @@ export const AuthProvider = ({ children }) => {
   // ── Bootstrap: verify tokens from backend on first mount ─────────────────
   useEffect(() => {
     const initAuth = async () => {
-      try {
-        const token     = storage.get('accessToken');
-        const savedUser = storage.get('user');
+      const token     = storage.get('accessToken');
+      const savedUser = storage.get('user');
 
-        if (token && savedUser) {
-          const response     = await profileService.getProfile();
-          const verifiedUser = response?.data ?? JSON.parse(savedUser);
-
-          if (!verifiedUser) throw new Error('Invalid session');
-
-          setUser(verifiedUser);
+      if (token && savedUser) {
+        try {
+          const parsedUser = JSON.parse(savedUser);
+          setUser(parsedUser);
           setIsAuthenticated(true);
-        } else {
-          setUser(null);
-          setIsAuthenticated(false);
+        } catch (e) {
+          console.error('Error parsing saved user', e);
         }
-      } catch {
-        storage.clear();
+      } else {
         setUser(null);
         setIsAuthenticated(false);
-      } finally {
-        setIsLoading(false);
+      }
+      
+      setIsLoading(false); // Immediately unblock rendering
+
+      // Silently verify and update user in background if token exists
+      if (token) {
+        try {
+          const response = await profileService.getProfile();
+          if (response?.data) {
+            setUser(response.data);
+            const isRemembered = !!localStorage.getItem('accessToken');
+            storage.set('user', JSON.stringify(response.data), isRemembered);
+          }
+        } catch (error) {
+          console.error('[Auth] Background profile verification failed:', error);
+          // If it fails (e.g., 401), api.js interceptor will handle clearing storage and redirecting.
+        }
       }
     };
 

@@ -29,3 +29,17 @@ export const LoadingScreen = () => {
     </div>
   );
 };
+
+export const PageLoader = () => {
+  return (
+    <div className="flex-1 flex flex-col items-center justify-center min-h-[400px] w-full bg-transparent">
+      <div className="relative mb-4">
+        <div className="w-10 h-10 rounded-full border-4 border-gray-100 dark:border-gray-800" />
+        <div className="absolute inset-0 w-10 h-10 rounded-full border-4 border-transparent border-t-primary-600 animate-spin" />
+      </div>
+      <p className="text-xs font-semibold text-gray-400 uppercase tracking-widest animate-pulse">
+        Loading...
+      </p>
+    </div>
+  );
+};

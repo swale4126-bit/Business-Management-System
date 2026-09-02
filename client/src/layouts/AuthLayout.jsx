@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import { Outlet, Navigate } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
-import { LoadingScreen } from '../components/ui/LoadingSpinner';
+import { LoadingScreen, PageLoader } from '../components/ui/LoadingSpinner';
 import { 
   HiUsers, HiUserGroup, HiTruck, HiCube, 
   HiClipboardDocumentList, HiBanknotes, HiDocumentChartBar, HiChartPie 
@@ -46,8 +46,10 @@ const AuthLayout = () => {
         </div>
 
         {/* Content Outlet (Login, Forgot Password, etc.) */}
-        <div className="w-full max-w-sm mx-auto">
-          <Outlet />
+        <div className="w-full max-w-sm mx-auto flex flex-col">
+          <Suspense fallback={<PageLoader />}>
+            <Outlet />
+          </Suspense>
         </div>
         
         {/* Footer */}

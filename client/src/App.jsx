@@ -45,82 +45,80 @@ const ForbiddenPage = lazy(() => import('./pages/errors/ForbiddenPage'));
 
 function App() {
   return (
-    <Suspense fallback={<LoadingScreen />}>
-      <Routes>
-        {/* Auth routes */}
+    <Routes>
+      {/* Auth routes */}
+      <Route element={<AuthLayout />}>
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+        <Route path="/reset-password" element={<ResetPasswordPage />} />
+      </Route>
+
+      {/* Force Password Change (Protected but allows mustChangePassword=true) */}
+      <Route element={<ProtectedRoute requirePasswordChange={false} />}>
         <Route element={<AuthLayout />}>
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/forgot-password" element={<ForgotPasswordPage />} />
-          <Route path="/reset-password" element={<ResetPasswordPage />} />
+          <Route path="/force-change-password" element={<ForceChangePasswordPage />} />
         </Route>
+      </Route>
 
-        {/* Force Password Change (Protected but allows mustChangePassword=true) */}
-        <Route element={<ProtectedRoute requirePasswordChange={false} />}>
-          <Route element={<AuthLayout />}>
-            <Route path="/force-change-password" element={<ForceChangePasswordPage />} />
+      {/* Protected dashboard routes */}
+      <Route element={<ProtectedRoute />}>
+        <Route element={<DashboardLayout />}>
+          <Route path="/" element={<Navigate to="/dashboard" replace />} />
+          <Route path="/dashboard" element={<DashboardPage />} />
+
+          {/* Employees - Admin only */}
+          <Route element={<RoleRoute roles={['ADMIN']} />}>
+            <Route path="/employees" element={<EmployeesPage />} />
+            <Route path="/employees/:id" element={<EmployeeDetail />} />
+          </Route>
+
+          {/* Customers */}
+          <Route path="/customers" element={<CustomersPage />} />
+          <Route path="/customers/:id" element={<CustomerDetail />} />
+
+          {/* Suppliers - Admin/Manager */}
+          <Route element={<RoleRoute roles={['ADMIN', 'MANAGER']} />}>
+            <Route path="/suppliers" element={<SuppliersPage />} />
+            <Route path="/suppliers/:id" element={<SupplierDetail />} />
+          </Route>
+
+          {/* Categories */}
+          <Route path="/categories" element={<CategoriesPage />} />
+
+          {/* Products */}
+          <Route path="/products" element={<ProductsPage />} />
+          <Route path="/products/:id" element={<ProductDetail />} />
+
+          {/* Inventory - All authenticated users (Staff view inventory) */}
+          <Route path="/inventory" element={<InventoryPage />} />
+          <Route path="/inventory/history" element={<InventoryHistoryPage />} />
+
+          {/* Sales */}
+          <Route path="/sales" element={<SalesPage />} />
+          <Route path="/sales/new" element={<CreateSalePage />} />
+          <Route path="/sales/:id" element={<SaleDetailPage />} />
+
+          {/* Reports & Analytics - Admin/Manager */}
+          <Route element={<RoleRoute roles={['ADMIN', 'MANAGER']} />}>
+            <Route path="/reports" element={<ReportsPage />} />
+            <Route path="/analytics" element={<AnalyticsPage />} />
+          </Route>
+
+          {/* Profile */}
+          <Route path="/profile" element={<ProfilePage />} />
+          <Route path="/notifications" element={<NotificationsPage />} />
+
+          {/* Settings - Admin only */}
+          <Route element={<RoleRoute roles={['ADMIN']} />}>
+            <Route path="/settings" element={<SettingsPage />} />
           </Route>
         </Route>
+      </Route>
 
-        {/* Protected dashboard routes */}
-        <Route element={<ProtectedRoute />}>
-          <Route element={<DashboardLayout />}>
-            <Route path="/" element={<Navigate to="/dashboard" replace />} />
-            <Route path="/dashboard" element={<DashboardPage />} />
-
-            {/* Employees - Admin only */}
-            <Route element={<RoleRoute roles={['ADMIN']} />}>
-              <Route path="/employees" element={<EmployeesPage />} />
-              <Route path="/employees/:id" element={<EmployeeDetail />} />
-            </Route>
-
-            {/* Customers */}
-            <Route path="/customers" element={<CustomersPage />} />
-            <Route path="/customers/:id" element={<CustomerDetail />} />
-
-            {/* Suppliers - Admin/Manager */}
-            <Route element={<RoleRoute roles={['ADMIN', 'MANAGER']} />}>
-              <Route path="/suppliers" element={<SuppliersPage />} />
-              <Route path="/suppliers/:id" element={<SupplierDetail />} />
-            </Route>
-
-            {/* Categories */}
-            <Route path="/categories" element={<CategoriesPage />} />
-
-            {/* Products */}
-            <Route path="/products" element={<ProductsPage />} />
-            <Route path="/products/:id" element={<ProductDetail />} />
-
-            {/* Inventory - All authenticated users (Staff view inventory) */}
-            <Route path="/inventory" element={<InventoryPage />} />
-            <Route path="/inventory/history" element={<InventoryHistoryPage />} />
-
-            {/* Sales */}
-            <Route path="/sales" element={<SalesPage />} />
-            <Route path="/sales/new" element={<CreateSalePage />} />
-            <Route path="/sales/:id" element={<SaleDetailPage />} />
-
-            {/* Reports & Analytics - Admin/Manager */}
-            <Route element={<RoleRoute roles={['ADMIN', 'MANAGER']} />}>
-              <Route path="/reports" element={<ReportsPage />} />
-              <Route path="/analytics" element={<AnalyticsPage />} />
-            </Route>
-
-            {/* Profile */}
-            <Route path="/profile" element={<ProfilePage />} />
-            <Route path="/notifications" element={<NotificationsPage />} />
-
-            {/* Settings - Admin only */}
-            <Route element={<RoleRoute roles={['ADMIN']} />}>
-              <Route path="/settings" element={<SettingsPage />} />
-            </Route>
-          </Route>
-        </Route>
-
-        {/* Error routes */}
-        <Route path="/403" element={<ForbiddenPage />} />
-        <Route path="*" element={<NotFoundPage />} />
-      </Routes>
-    </Suspense>
+      {/* Error routes */}
+      <Route path="/403" element={<ForbiddenPage />} />
+      <Route path="*" element={<NotFoundPage />} />
+    </Routes>
   );
 }
 
