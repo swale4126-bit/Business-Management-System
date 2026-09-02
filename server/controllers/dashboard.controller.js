@@ -129,6 +129,7 @@ exports.getDashboardCharts = async (req, res) => {
   const revenueByMonth = [];
   const salesByMonth = [];
 
+  const monthPromises = [];
   for (let i = 11; i >= 0; i--) {
     const d = new Date();
     d.setDate(1);
@@ -143,15 +144,22 @@ exports.getDashboardCharts = async (req, res) => {
       ...(isStaff && { createdById: userId }),
     };
 
-    const monthSales = await prisma.sale.aggregate({
-      where: whereClause,
-      _sum: { totalAmount: true },
-      _count: { id: true },
-    });
-
-    revenueByMonth.push({ month: monthStr, revenue: Number(monthSales._sum.totalAmount) || 0 });
-    salesByMonth.push({ month: monthStr, count: monthSales._count.id || 0 });
+    monthPromises.push(
+      prisma.sale.aggregate({
+        where: whereClause,
+        _sum: { totalAmount: true },
+        _count: { id: true },
+      }).then(monthSales => ({
+        month: monthStr,
+        revenue: Number(monthSales._sum.totalAmount) || 0,
+        count: monthSales._count.id || 0
+      }))
+    );
   }
+
+  const monthsData = await Promise.all(monthPromises);
+  const revenueByMonth = monthsData.map(m => ({ month: m.month, revenue: m.revenue }));
+  const salesByMonth = monthsData.map(m => ({ month: m.month, count: m.count }));
 
   // Staff don't get top-products / top-customers / category breakdown
   if (isStaff) {
@@ -182,40 +190,40 @@ exports.getDashboardCharts = async (req, res) => {
     take: 5,
   });
 
-  const topCustomers = await Promise.all(
-    topCustomersRaw.map(async (c) => {
-      const cust = await prisma.customer.findUnique({
-        where: { id: c.customerId },
-        select: { name: true },
-      });
-      return {
-        name: cust?.name || 'Walk-in',
-        totalSpent: Number(c._sum.totalAmount) || 0,
-        orderCount: c._count.id,
-      };
-    })
-  );
+  const customerIds = topCustomersRaw.map(c => c.customerId);
+  const customers = await prisma.customer.findMany({
+    where: { id: { in: customerIds } },
+    select: { id: true, name: true }
+  });
+  const customerMap = customers.reduce((acc, curr) => {
+    acc[curr.id] = curr.name;
+    return acc;
+  }, {});
+
+  const topCustomers = topCustomersRaw.map((c) => ({
+    name: customerMap[c.customerId] || 'Walk-in',
+    totalSpent: Number(c._sum.totalAmount) || 0,
+    orderCount: c._count.id,
+  }));
 
   // ── Category distribution ─────────────────────────────────────────────────
-  const categoriesRaw = await prisma.category.findMany({
-    include: {
-      products: {
-        include: {
-          saleItems: { select: { total: true } },
-        },
-      },
-    },
-  });
+  const categoryDistributionRaw = await prisma.$queryRaw`
+    SELECT 
+      c.name, 
+      COUNT(DISTINCT p.id)::int as "productCount", 
+      COALESCE(SUM(si.total), 0)::float as revenue
+    FROM categories c
+    LEFT JOIN products p ON p."categoryId" = c.id
+    LEFT JOIN sale_items si ON si."productId" = p.id
+    GROUP BY c.id, c.name
+    HAVING COUNT(DISTINCT p.id) > 0
+  `;
 
-  const categoryDistribution = categoriesRaw
-    .map((cat) => {
-      let revenue = 0;
-      cat.products.forEach((p) => {
-        p.saleItems.forEach((si) => { revenue += Number(si.total); });
-      });
-      return { name: cat.name, productCount: cat.products.length, revenue };
-    })
-    .filter((c) => c.productCount > 0);
+  const categoryDistribution = categoryDistributionRaw.map(c => ({
+    name: c.name,
+    productCount: Number(c.productCount),
+    revenue: Number(c.revenue)
+  }));
 
   return sendSuccess(res, {
     revenueByMonth,

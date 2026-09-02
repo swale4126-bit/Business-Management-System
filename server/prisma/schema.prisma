@@ -6,8 +6,9 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
 
 // ─────────────────────────────────────────────
@@ -219,6 +220,8 @@ model Product {
   saleItems     SaleItem[]
   stockMovements StockMovement[]
 
+  @@index([categoryId])
+  @@index([supplierId])
   @@map("products")
 }
 
@@ -249,6 +252,10 @@ model Sale {
   saleItems     SaleItem[]
   payments      Payment[]
 
+  @@index([customerId])
+  @@index([createdById])
+  @@index([status])
+  @@index([createdAt])
   @@map("sales")
 }
 
@@ -271,6 +278,8 @@ model SaleItem {
   sale        Sale     @relation(fields: [saleId], references: [id], onDelete: Cascade)
   product     Product  @relation(fields: [productId], references: [id])
 
+  @@index([saleId])
+  @@index([productId])
   @@map("sale_items")
 }
 
@@ -314,6 +323,7 @@ model StockMovement {
   product     Product           @relation(fields: [productId], references: [id])
   supplier    Supplier?         @relation(fields: [supplierId], references: [id])
 
+  @@index([productId])
   @@map("stock_movements")
 }
 

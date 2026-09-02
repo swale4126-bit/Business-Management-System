@@ -59,12 +59,19 @@ exports.createSale = async (req, res) => {
     
     try {
         const result = await prisma.$transaction(async (tx) => {
-            // 1. Generate invoice number
+            // 1. Generate invoice number with random suffix to prevent transaction race conditions
             const lastSale = await tx.sale.findFirst({
                 orderBy: { createdAt: 'desc' }
             });
-            const lastNum = lastSale && lastSale.invoiceNumber ? parseInt(lastSale.invoiceNumber.split('-')[2], 10) : 0;
-            const invoiceNumber = `INV-${new Date().getFullYear()}-${String(lastNum + 1).padStart(4, '0')}`;
+            let lastNum = 0;
+            if (lastSale && lastSale.invoiceNumber) {
+                const parts = lastSale.invoiceNumber.split('-');
+                if (parts.length >= 3) {
+                    lastNum = parseInt(parts[2], 10) || 0;
+                }
+            }
+            const randomSuffix = Math.floor(Math.random() * 10000).toString().padStart(4, '0');
+            const invoiceNumber = `INV-${new Date().getFullYear()}-${String(lastNum + 1).padStart(4, '0')}-${randomSuffix}`;
 
             let subtotal = 0;
             const saleItemsData = [];

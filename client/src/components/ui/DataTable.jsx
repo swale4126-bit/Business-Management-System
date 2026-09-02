@@ -45,10 +45,10 @@ const DataTable = ({ columns, data, isLoading, emptyMessage = 'No records found'
   }
 
   return (
-    <div className="overflow-x-auto cursor-default">
-      <table className="min-w-full">
-        <thead className="bg-gray-50/80 dark:bg-gray-800/60 border-b border-gray-200 dark:border-gray-700">
-          <tr>
+    <div className="w-full">
+      <table className="w-full block md:table">
+        <thead className="hidden md:table-header-group bg-gray-50/80 dark:bg-gray-800/60 border-b border-gray-200 dark:border-gray-700">
+          <tr className="md:table-row">
             {columns.map((col, idx) => (
               <th
                 key={idx}
@@ -60,22 +60,27 @@ const DataTable = ({ columns, data, isLoading, emptyMessage = 'No records found'
             ))}
           </tr>
         </thead>
-        <tbody className="bg-white dark:bg-gray-900 divide-y divide-gray-100 dark:divide-gray-800/80">
+        <tbody className="block md:table-row-group bg-transparent md:bg-white md:dark:bg-gray-900 md:divide-y md:divide-gray-100 md:dark:divide-gray-800/80">
           {data.map((row, rowIdx) => (
             <tr
               key={rowIdx}
-              className="hover:bg-gray-50/80 dark:hover:bg-gray-800/40 transition-colors duration-100"
+              className="block md:table-row bg-white dark:bg-gray-900 border border-gray-200/80 dark:border-gray-800 rounded-2xl mb-4 md:mb-0 md:border-none shadow-sm md:shadow-none hover:bg-gray-50/80 dark:hover:bg-gray-800/40 transition-colors duration-100"
             >
               {columns.map((col, colIdx) => (
                 <td
                   key={colIdx}
-                  className="px-5 py-3.5 text-sm text-gray-700 dark:text-gray-300"
+                  className="flex md:table-cell items-center justify-between px-4 py-3 md:px-5 md:py-3.5 text-sm text-gray-700 dark:text-gray-300 border-b border-gray-100 dark:border-gray-800 md:border-b-0 last:border-b-0"
                 >
-                  {col.render
-                    ? col.render(row)
-                    : typeof col.accessor === 'function'
-                    ? col.accessor(row)
-                    : row[col.accessor]}
+                  <span className="md:hidden font-semibold text-xs text-gray-500 dark:text-gray-400 uppercase whitespace-nowrap mr-4">
+                    {col.header}
+                  </span>
+                  <div className="text-right md:text-left flex-grow flex justify-end md:justify-start break-all md:break-normal">
+                    {col.render
+                      ? col.render(row)
+                      : typeof col.accessor === 'function'
+                      ? col.accessor(row)
+                      : row[col.accessor]}
+                  </div>
                 </td>
               ))}
             </tr>
