@@ -8,7 +8,7 @@ export const SidebarProvider = ({ children }) => {
 
   useEffect(() => {
     const handleResize = () => {
-      if (window.innerWidth < 1024) {
+      if (window.innerWidth < 768) {
         setIsOpen(false);
       } else {
         setIsOpen(true);
@@ -21,7 +21,7 @@ export const SidebarProvider = ({ children }) => {
   }, []);
 
   const toggleSidebar = () => {
-    if (window.innerWidth < 1024) {
+    if (window.innerWidth < 768) {
       setIsOpen(!isOpen);
     } else {
       setIsCollapsed(!isCollapsed);
@@ -29,7 +29,7 @@ export const SidebarProvider = ({ children }) => {
   };
 
   const closeSidebar = () => {
-    if (window.innerWidth < 1024) {
+    if (window.innerWidth < 768) {
       setIsOpen(false);
     }
   };

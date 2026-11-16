@@ -25,42 +25,44 @@ const AuthLayout = () => {
     <div className="min-h-screen flex flex-col lg:flex-row bg-slate-50 dark:bg-slate-950 font-sans">
       
       {/* Left Column: Form & Interaction Area */}
-      <div className="w-full lg:w-[52%] xl:w-[48%] flex flex-col justify-between p-6 sm:p-10 lg:p-12 xl:p-16 min-h-screen">
-        
-        {/* Brand Header */}
-        <div className="flex items-center justify-between w-full max-w-md mx-auto mb-6 sm:mb-8">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-600 via-indigo-600 to-blue-700 flex items-center justify-center shadow-lg shadow-blue-500/25 ring-1 ring-white/20 flex-shrink-0">
-              <span className="text-white font-extrabold text-lg tracking-tight">B</span>
+      <div className="w-full lg:w-[50%] xl:w-[46%] flex flex-col justify-center items-center py-6 sm:py-10 px-4 sm:px-8 lg:px-10 min-h-screen relative">
+        <div className="w-full max-w-md flex flex-col gap-4 sm:gap-5 my-auto">
+          
+          {/* Brand Header */}
+          <div className="flex items-center justify-between w-full">
+            <div className="flex items-center gap-3">
+              <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-br from-blue-600 via-indigo-600 to-blue-700 flex items-center justify-center shadow-lg shadow-blue-500/25 ring-1 ring-white/20 flex-shrink-0">
+                <span className="text-white font-extrabold text-base sm:text-lg tracking-tight">B</span>
+              </div>
+              <div>
+                <span className="font-extrabold text-slate-900 dark:text-white tracking-tight leading-tight block text-base sm:text-lg">
+                  Business Manager
+                </span>
+                <span className="text-[10px] sm:text-[11px] font-semibold text-blue-600 dark:text-blue-400 uppercase tracking-wider block">
+                  Enterprise Cloud Platform
+                </span>
+              </div>
             </div>
-            <div>
-              <span className="font-extrabold text-slate-900 dark:text-white tracking-tight leading-tight block text-base sm:text-lg">
-                Business Manager
-              </span>
-              <span className="text-[11px] font-semibold text-blue-600 dark:text-blue-400 uppercase tracking-wider block">
-                Enterprise Cloud Platform
-              </span>
+
+            <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] sm:text-[11px] font-medium bg-emerald-50 text-emerald-700 dark:bg-emerald-950/50 dark:text-emerald-400 border border-emerald-200/80 dark:border-emerald-800">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+              Live Cloud
             </div>
           </div>
 
-          <div className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-medium bg-emerald-50 text-emerald-700 dark:bg-emerald-950/50 dark:text-emerald-400 border border-emerald-200/80 dark:border-emerald-800">
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-            Live Cloud
+          {/* Form Content Outlet */}
+          <div className="w-full">
+            <Suspense fallback={<PageLoader />}>
+              <Outlet />
+            </Suspense>
           </div>
-        </div>
-
-        {/* Form Content Outlet */}
-        <div className="w-full max-w-md mx-auto my-auto py-2">
-          <Suspense fallback={<PageLoader />}>
-            <Outlet />
-          </Suspense>
-        </div>
-        
-        {/* Footer */}
-        <div className="w-full max-w-md mx-auto mt-8 pt-4 border-t border-slate-200/60 dark:border-slate-800/80 text-center">
-          <p className="text-xs text-slate-400 dark:text-slate-500">
-            © {new Date().getFullYear()} Business Management System. Built with enterprise security & RBAC.
-          </p>
+          
+          {/* Footer */}
+          <div className="w-full pt-3 border-t border-slate-200/60 dark:border-slate-800/80 text-center">
+            <p className="text-[11px] sm:text-xs text-slate-400 dark:text-slate-500">
+              © {new Date().getFullYear()} Business Management System · Enterprise RBAC
+            </p>
+          </div>
         </div>
       </div>
 

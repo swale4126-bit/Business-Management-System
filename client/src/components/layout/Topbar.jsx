@@ -79,8 +79,8 @@ const Topbar = () => {
             )}
             <div className="hidden sm:block text-left">
               <div className="flex items-center gap-1.5">
-                <p className="text-xs font-semibold text-gray-700 dark:text-gray-200 leading-tight truncate max-w-[100px]">
-                  {displayName}
+                <p className="text-xs font-semibold text-gray-700 dark:text-gray-200 leading-tight truncate max-w-[120px]">
+                  {user?.isDemo ? 'Demo Explorer' : displayName}
                 </p>
                 {user?.isDemo && (
                   <span className="px-1.5 py-0.5 rounded text-[9px] font-extrabold uppercase bg-amber-100 text-amber-800 dark:bg-amber-900/40 dark:text-amber-300 border border-amber-300 dark:border-amber-700">
@@ -88,8 +88,8 @@ const Topbar = () => {
                   </span>
                 )}
               </div>
-              <p className="text-[10px] text-gray-400 dark:text-gray-500 truncate max-w-[100px] leading-tight">
-                {user?.isDemo ? 'Guest Explorer' : user?.role}
+              <p className="text-[10px] text-gray-400 dark:text-gray-500 truncate max-w-[120px] leading-tight font-medium">
+                {user?.isDemo ? 'Admin (Demo Mode)' : user?.role}
               </p>
             </div>
             <HiChevronDown className={`hidden sm:block w-3.5 h-3.5 text-gray-400 flex-shrink-0 transition-transform duration-150 ${profileOpen ? 'rotate-180' : ''}`} />

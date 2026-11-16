@@ -210,10 +210,10 @@ const Sidebar = () => {
               )}
               <div className="min-w-0 flex-1">
                 <p className="text-xs font-semibold text-white truncate leading-tight">
-                  {`${user?.firstName || ''} ${user?.lastName || ''}`.trim() || user?.name || 'User'}
+                  {user?.isDemo ? 'Demo Explorer' : `${user?.firstName || ''} ${user?.lastName || ''}`.trim() || user?.name || 'User'}
                 </p>
-                <span className="text-[10px] text-blue-400 font-medium tracking-wider truncate block">
-                  {user?.role}
+                <span className={`text-[10px] font-semibold tracking-wider truncate block ${user?.isDemo ? 'text-amber-400' : 'text-blue-400'}`}>
+                  {user?.isDemo ? 'Admin (Demo Mode)' : user?.role}
                 </span>
               </div>
             </div>

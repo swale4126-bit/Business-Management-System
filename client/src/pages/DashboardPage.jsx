@@ -98,8 +98,8 @@ const DashboardPage = () => {
           </div>
           <div className="h-10 bg-gray-200 dark:bg-gray-800 rounded-xl w-32" />
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-6 gap-6">
-          {[...Array(6)].map((_, i) => <div key={i} className="h-32 bg-gray-200 dark:bg-gray-800 rounded-2xl" />)}
+        <div className="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-6 gap-2.5 sm:gap-4">
+          {[...Array(6)].map((_, i) => <div key={i} className="h-24 bg-gray-200 dark:bg-gray-800 rounded-xl sm:rounded-2xl" />)}
         </div>
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
           <div className="lg:col-span-3 h-80 bg-gray-200 dark:bg-gray-800 rounded-2xl" />
@@ -221,7 +221,7 @@ const DashboardPage = () => {
         </div>
 
         {/* Staff KPI cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-4">
           <StatsCard
             title="Today's Revenue"
             value={`$${Number(stats?.todaySales || 0).toLocaleString(undefined, { minimumFractionDigits: 2 })}`}
@@ -320,29 +320,38 @@ const DashboardPage = () => {
   }
 
   // ── ADMIN & MANAGER DASHBOARD ──────────────────────────────────────────────
-  const isAdmin = role === 'ADMIN';
+  const isAdmin = role === 'ADMIN' || user?.isDemo;
+  const isDemo = !!user?.isDemo;
 
   return (
-    <div className="space-y-8 animate-fade-in">
+    <div className="space-y-6 sm:space-y-8 animate-fade-in">
       {/* Header Banner */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
         <div>
-          <div className="flex items-center gap-2 mb-1">
-            <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-primary-50 text-primary-700 dark:bg-primary-950/50 dark:text-primary-300 ring-1 ring-primary-600/20">
+          <div className="flex flex-wrap items-center gap-2 mb-1">
+            <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-primary-50 text-primary-700 dark:bg-primary-950/50 dark:text-primary-300 ring-1 ring-primary-600/20">
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
               Live Enterprise Overview
             </span>
+            {isDemo && (
+              <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-amber-50 text-amber-800 dark:bg-amber-950/60 dark:text-amber-300 border border-amber-300 dark:border-amber-700">
+                <HiSparkles className="w-3.5 h-3.5 text-amber-500 animate-pulse" />
+                Demo Mode · Read-Only Access
+              </span>
+            )}
           </div>
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-gray-900 dark:text-white tracking-tight">
+          <h1 className="text-xl sm:text-2xl lg:text-3xl font-extrabold text-gray-900 dark:text-white tracking-tight">
             {isAdmin ? 'Admin Dashboard' : 'Manager Dashboard'}
           </h1>
-          <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 mt-1">
-            Here's what's happening across your business operations today.
+          <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 mt-0.5">
+            {isDemo 
+              ? "Exploring enterprise metrics, financial charts, and operations with safe read-only access."
+              : "Here's what's happening across your business operations today."}
           </p>
         </div>
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2.5 flex-shrink-0">
           <Link to="/sales/new">
-            <Button variant="primary" leftIcon={<HiPlus className="w-4 h-4" />}>
+            <Button variant="primary" size="sm" leftIcon={<HiPlus className="w-4 h-4" />}>
               Create New Sale
             </Button>
           </Link>
@@ -350,7 +359,7 @@ const DashboardPage = () => {
       </div>
 
       {/* KPI Cards Grid */}
-      <div className={`grid grid-cols-1 sm:grid-cols-2 ${isAdmin ? 'lg:grid-cols-3 xl:grid-cols-6' : 'lg:grid-cols-3 xl:grid-cols-5'} gap-5`}>
+      <div className={`grid grid-cols-2 ${isAdmin ? 'sm:grid-cols-3 xl:grid-cols-6' : 'sm:grid-cols-3 xl:grid-cols-5'} gap-2.5 sm:gap-4`}>
         <StatsCard
           title="Total Revenue"
           value={`$${Number(stats?.totalRevenue || 0).toLocaleString(undefined, { minimumFractionDigits: 2 })}`}
@@ -372,7 +381,7 @@ const DashboardPage = () => {
           icon={HiCube} iconColor="amber"
         />
         <StatsCard
-          title="Low Stock Alerts"
+          title="Low Stock"
           value={(stats?.lowStockCount ?? 0).toLocaleString()}
           icon={HiExclamationTriangle} iconColor="red" description="Requires attention"
         />
