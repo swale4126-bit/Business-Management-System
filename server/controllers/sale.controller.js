@@ -44,7 +44,7 @@ exports.getSaleById = async (req, res) => {
                 include: { product: { select: { name: true, sku: true } } }
             },
             customer: true,
-            createdBy: { select: { firstName: true, lastName: true, email: true } },
+            createdBy: { select: { firstName: true, lastName: true } },
             payments: true
         }
     });

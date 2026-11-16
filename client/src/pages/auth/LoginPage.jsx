@@ -6,7 +6,7 @@ import { useAuth } from '../../hooks/useAuth';
 import { Link, useNavigate } from 'react-router-dom';
 import Input from '../../components/ui/Input';
 import Button from '../../components/ui/Button';
-import { HiEnvelope, HiLockClosed, HiEye, HiEyeSlash, HiExclamationCircle } from 'react-icons/hi2';
+import { HiEnvelope, HiLockClosed, HiEye, HiEyeSlash, HiExclamationCircle, HiSparkles } from 'react-icons/hi2';
 
 const loginSchema = z.object({
   email: z.string()
@@ -18,9 +18,10 @@ const loginSchema = z.object({
 });
 
 const LoginPage = () => {
-  const { login } = useAuth();
+  const { login, demoLogin } = useAuth();
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
+  const [isDemoLoading, setIsDemoLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [authError, setAuthError] = useState('');
 
@@ -65,6 +66,25 @@ const LoginPage = () => {
       }
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  const handleDemoLogin = async () => {
+    if (isLoading || isDemoLoading) return;
+    setAuthError('');
+    try {
+      setIsDemoLoading(true);
+      await demoLogin();
+      navigate('/dashboard', { replace: true });
+    } catch (error) {
+      if (!error.response) {
+        setAuthError('Network error or server unreachable.');
+      } else {
+        const msg = error.response.data?.message || 'Failed to start demo session. Please try again.';
+        setAuthError(msg);
+      }
+    } finally {
+      setIsDemoLoading(false);
     }
   };
 
@@ -140,10 +160,36 @@ const LoginPage = () => {
           variant="primary"
           size="lg"
           isLoading={isLoading}
-          disabled={isLoading}
+          disabled={isLoading || isDemoLoading}
           className="w-full mt-4 font-bold text-sm shadow-md"
         >
           {isLoading ? 'Signing in...' : 'Sign In'}
+        </Button>
+
+        {/* Guest Exploration Divider */}
+        <div className="relative my-4">
+          <div className="absolute inset-0 flex items-center">
+            <div className="w-full border-t border-gray-200 dark:border-gray-800" />
+          </div>
+          <div className="relative flex justify-center text-xs uppercase">
+            <span className="bg-white dark:bg-gray-900 px-3 text-gray-400 dark:text-gray-500 font-medium tracking-wider">
+              Or explore as guest
+            </span>
+          </div>
+        </div>
+
+        {/* Explore Demo Button */}
+        <Button
+          type="button"
+          variant="secondary"
+          size="lg"
+          onClick={handleDemoLogin}
+          isLoading={isDemoLoading}
+          disabled={isLoading || isDemoLoading}
+          className="w-full font-bold text-sm border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-200 shadow-sm"
+          leftIcon={<HiSparkles className="w-4 h-4 text-amber-500" />}
+        >
+          {isDemoLoading ? 'Entering Demo...' : 'Explore Demo (Read-Only)'}
         </Button>
       </form>
     </div>

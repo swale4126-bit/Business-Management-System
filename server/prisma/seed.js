@@ -68,6 +68,28 @@ async function main() {
 
   console.log('✅ Admin employee profile configured');
 
+  // ── Public Demo Account (Read-Only Exploration)
+  const demoPass = await bcrypt.hash('DemoPass@2026!', 12);
+  await prisma.user.upsert({
+    where: { email: 'demo@bms.com' },
+    update: {
+      role: 'MANAGER',
+      isActive: true,
+      mustChangePassword: false,
+    },
+    create: {
+      email: 'demo@bms.com',
+      password: demoPass,
+      firstName: 'Demo',
+      lastName: 'Manager',
+      role: 'MANAGER',
+      isActive: true,
+      mustChangePassword: false,
+      phone: '+1-555-DEMO',
+    },
+  });
+  console.log('✅ Demo user configured: demo@bms.com');
+
   // ── Categories
   const categories = await Promise.all([
     prisma.category.upsert({ where: { name: 'Electronics' }, update: {}, create: { name: 'Electronics', description: 'Electronic devices and accessories' } }),

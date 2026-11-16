@@ -6,21 +6,21 @@ const { env } = require('../config/env');
 
 /**
  * Generate an access token (short-lived)
- * @param {object} payload - { id, email, role }
+ * @param {object} payload - { id, email, role, isDemo }
  */
 const generateAccessToken = (payload) => {
   return jwt.sign(payload, env.JWT_ACCESS_SECRET, {
-    expiresIn: env.JWT_ACCESS_EXPIRES_IN,
+    expiresIn: payload.isDemo ? '2h' : env.JWT_ACCESS_EXPIRES_IN,
   });
 };
 
 /**
  * Generate a refresh token (long-lived)
- * @param {object} payload - { id }
+ * @param {object} payload - { id, isDemo }
  */
 const generateRefreshToken = (payload) => {
   return jwt.sign(payload, env.JWT_REFRESH_SECRET, {
-    expiresIn: env.JWT_REFRESH_EXPIRES_IN,
+    expiresIn: payload.isDemo ? '24h' : env.JWT_REFRESH_EXPIRES_IN,
   });
 };
 

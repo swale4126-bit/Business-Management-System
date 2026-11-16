@@ -37,7 +37,28 @@ const authenticate = async (req, res, next) => {
       return sendError(res, 'Account is deactivated. Contact admin.', 403);
     }
 
-    req.user = user;
+    const isDemo = decoded.isDemo || user.email === (process.env.DEMO_USER_EMAIL || 'demo@bms.com');
+
+    req.user = {
+      ...user,
+      isDemo: !!isDemo,
+    };
+
+    // Global Read-Only Demo Guard:
+    // If request belongs to a demo session, block all mutating methods (POST, PUT, PATCH, DELETE)
+    // with exception only for logout
+    const safeMethods = ['GET', 'HEAD', 'OPTIONS'];
+    if (isDemo && !safeMethods.includes(req.method)) {
+      const isLogout = req.originalUrl?.includes('/auth/logout') || req.path === '/logout';
+      if (!isLogout) {
+        return sendError(
+          res,
+          'Demo Mode: Modification actions are disabled in the public demo to protect data integrity.',
+          403
+        );
+      }
+    }
+
     next();
   } catch (error) {
     console.log('[Auth] Error:', error.name, error.message);

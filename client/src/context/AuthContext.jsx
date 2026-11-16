@@ -91,6 +91,21 @@ export const AuthProvider = ({ children }) => {
     return userData;
   }, []);
 
+  // ── Demo Login — always uses session-only storage ────────────────────────
+  const demoLogin = useCallback(async () => {
+    const response = await authService.demoLogin();
+    const { user: userData, accessToken, refreshToken } = response.data || response;
+
+    storage.set('accessToken',  accessToken,  false);
+    storage.set('refreshToken', refreshToken, false);
+    storage.set('user',         JSON.stringify(userData), false);
+
+    setUser(userData);
+    setIsAuthenticated(true);
+
+    return userData;
+  }, []);
+
   // ── Logout ───────────────────────────────────────────────────────────────
   const logout = useCallback(async () => {
     try {
@@ -125,6 +140,7 @@ export const AuthProvider = ({ children }) => {
         isAuthenticated,
         isLoading,
         login,
+        demoLogin,
         logout,
         updateUser,
         hasRole,

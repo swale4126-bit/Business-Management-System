@@ -5,6 +5,10 @@ const authService = {
     const response = await api.post('/auth/login', { email, password });
     return response.data;
   },
+  demoLogin: async () => {
+    const response = await api.post('/auth/demo-login');
+    return response.data;
+  },
   logout: async () => {
     const refreshToken = sessionStorage.getItem('refreshToken');
     const response = await api.post('/auth/logout', { token: refreshToken });

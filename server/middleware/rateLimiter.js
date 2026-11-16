@@ -28,4 +28,16 @@ const authLimiter = rateLimit({
   },
 });
 
-module.exports = { apiLimiter, authLimiter };
+// Dedicated limiter for public demo login (allows generous exploration for recruiters)
+const demoLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 60,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: {
+    success: false,
+    message: 'Too many demo access requests from this IP. Please try again in 15 minutes.',
+  },
+});
+
+module.exports = { apiLimiter, authLimiter, demoLimiter };

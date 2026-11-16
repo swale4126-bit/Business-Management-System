@@ -78,11 +78,18 @@ const Topbar = () => {
               </div>
             )}
             <div className="hidden sm:block text-left">
-              <p className="text-xs font-semibold text-gray-700 dark:text-gray-200 leading-tight truncate max-w-[100px]">
-                {displayName}
-              </p>
+              <div className="flex items-center gap-1.5">
+                <p className="text-xs font-semibold text-gray-700 dark:text-gray-200 leading-tight truncate max-w-[100px]">
+                  {displayName}
+                </p>
+                {user?.isDemo && (
+                  <span className="px-1.5 py-0.5 rounded text-[9px] font-extrabold uppercase bg-amber-100 text-amber-800 dark:bg-amber-900/40 dark:text-amber-300 border border-amber-300 dark:border-amber-700">
+                    Demo
+                  </span>
+                )}
+              </div>
               <p className="text-[10px] text-gray-400 dark:text-gray-500 truncate max-w-[100px] leading-tight">
-                {user?.role}
+                {user?.isDemo ? 'Guest Explorer' : user?.role}
               </p>
             </div>
             <HiChevronDown className={`hidden sm:block w-3.5 h-3.5 text-gray-400 flex-shrink-0 transition-transform duration-150 ${profileOpen ? 'rotate-180' : ''}`} />
@@ -130,13 +137,15 @@ const Topbar = () => {
                       <HiUser className="w-4 h-4 text-gray-400" />
                       My Profile
                     </button>
-                    <button
-                      onClick={() => { navigate('/settings'); setProfileOpen(false); }}
-                      className="w-full flex items-center gap-2.5 px-4 py-2.5 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800/80 transition-colors"
-                    >
-                      <HiCog6Tooth className="w-4 h-4 text-gray-400" />
-                      Settings
-                    </button>
+                    {user?.role === 'ADMIN' && (
+                      <button
+                        onClick={() => { navigate('/settings'); setProfileOpen(false); }}
+                        className="w-full flex items-center gap-2.5 px-4 py-2.5 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800/80 transition-colors"
+                      >
+                        <HiCog6Tooth className="w-4 h-4 text-gray-400" />
+                        Settings
+                      </button>
+                    )}
                   </div>
 
                   <div className="border-t border-gray-100 dark:border-gray-800 py-1.5">
