@@ -126,9 +126,6 @@ exports.getDashboardCharts = async (req, res) => {
   const isStaff = role === 'STAFF';
 
   // ── Revenue / Sales by month (last 12 months) ─────────────────────────────
-  const revenueByMonth = [];
-  const salesByMonth = [];
-
   const monthPromises = [];
   for (let i = 11; i >= 0; i--) {
     const d = new Date();

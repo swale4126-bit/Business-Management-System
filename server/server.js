@@ -18,11 +18,16 @@ const allowedOrigins = [
   'http://localhost:5173',
   'http://localhost:5174',
   'http://localhost:5175'
-];
+].filter(Boolean).map(url => url.replace(/\/$/, ''));
 
 app.use(cors({ 
   origin: function (origin, callback) {
-    if (!origin || allowedOrigins.includes(origin)) {
+    if (!origin) return callback(null, true);
+    const cleanOrigin = origin.replace(/\/$/, '');
+    if (
+      allowedOrigins.includes(cleanOrigin) ||
+      cleanOrigin.endsWith('.vercel.app')
+    ) {
       callback(null, true);
     } else {
       callback(new Error('Not allowed by CORS'));
@@ -49,6 +54,9 @@ app.use(
     },
   })
 );
+
+app.get('/health', (req, res) => res.status(200).json({ status: 'ok', timestamp: new Date().toISOString() }));
+app.get('/', (req, res) => res.status(200).json({ name: 'BMS Backend API', status: 'live' }));
 
 app.use('/api', apiLimiter);
 
