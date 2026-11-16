@@ -4,7 +4,8 @@ import { useAuth } from '../hooks/useAuth';
 import { LoadingScreen, PageLoader } from '../components/ui/LoadingSpinner';
 import { 
   HiUsers, HiUserGroup, HiTruck, HiCube, 
-  HiClipboardDocumentList, HiBanknotes, HiDocumentChartBar, HiChartPie 
+  HiClipboardDocumentList, HiBanknotes, HiDocumentChartBar, HiChartPie,
+  HiShieldCheck, HiSparkles, HiCheckCircle
 } from 'react-icons/hi2';
 
 const AuthLayout = () => {
@@ -13,80 +14,111 @@ const AuthLayout = () => {
   if (isLoading) return <LoadingScreen />;
   if (isAuthenticated) return <Navigate to="/dashboard" replace />;
 
-  const features = [
-    { name: 'Employees', icon: HiUsers },
-    { name: 'Customers', icon: HiUserGroup },
-    { name: 'Suppliers', icon: HiTruck },
-    { name: 'Products', icon: HiCube },
-    { name: 'Inventory', icon: HiClipboardDocumentList },
-    { name: 'Sales', icon: HiBanknotes },
-    { name: 'Reports', icon: HiDocumentChartBar },
-    { name: 'Analytics', icon: HiChartPie },
+  const enterpriseHighlights = [
+    { label: 'Real-Time Inventory', desc: 'Automated stock tracking, min-threshold alerts & PO history', icon: HiCube },
+    { label: 'POS & Sales Checkout', desc: 'Instant invoice generator with cash, card, and bank reconciliations', icon: HiBanknotes },
+    { label: 'Financial Analytics', desc: '12-month revenue velocity, product demand & customer insights', icon: HiChartPie },
+    { label: 'Strict RBAC Security', desc: 'Granular permissions across Administrator, Manager, and Staff', icon: HiShieldCheck },
   ];
 
   return (
-    <div className="min-h-screen flex bg-white dark:bg-gray-950 font-sans">
+    <div className="min-h-screen flex flex-col lg:flex-row bg-slate-50 dark:bg-slate-950 font-sans">
       
-      {/* Left Column: Form Area */}
-      <div className="w-full lg:w-1/2 flex flex-col justify-center px-8 sm:px-16 lg:px-24 xl:px-32 relative">
+      {/* Left Column: Form & Interaction Area */}
+      <div className="w-full lg:w-[52%] xl:w-[48%] flex flex-col justify-between p-6 sm:p-10 lg:p-12 xl:p-16 min-h-screen">
         
-        {/* Brand Logo - Absolute Top Left */}
-        <div className="absolute top-8 left-8 sm:left-16 lg:left-24 flex items-start gap-3">
-          <div className="w-10 h-10 rounded-xl bg-primary-600 flex items-center justify-center shadow-md flex-shrink-0">
-            <span className="text-white font-bold text-lg">B</span>
+        {/* Brand Header */}
+        <div className="flex items-center justify-between w-full max-w-md mx-auto mb-6 sm:mb-8">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-600 via-indigo-600 to-blue-700 flex items-center justify-center shadow-lg shadow-blue-500/25 ring-1 ring-white/20 flex-shrink-0">
+              <span className="text-white font-extrabold text-lg tracking-tight">B</span>
+            </div>
+            <div>
+              <span className="font-extrabold text-slate-900 dark:text-white tracking-tight leading-tight block text-base sm:text-lg">
+                Business Manager
+              </span>
+              <span className="text-[11px] font-semibold text-blue-600 dark:text-blue-400 uppercase tracking-wider block">
+                Enterprise Cloud Platform
+              </span>
+            </div>
           </div>
-          <div className="flex flex-col">
-            <span className="font-extrabold text-gray-900 dark:text-white tracking-tight leading-tight">
-              Business Management System
-            </span>
-            <span className="text-xs font-semibold text-gray-500 uppercase tracking-widest mt-0.5">
-              Enterprise Business Platform
-            </span>
+
+          <div className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-medium bg-emerald-50 text-emerald-700 dark:bg-emerald-950/50 dark:text-emerald-400 border border-emerald-200/80 dark:border-emerald-800">
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+            Live Cloud
           </div>
         </div>
 
-        {/* Content Outlet (Login, Forgot Password, etc.) */}
-        <div className="w-full max-w-sm mx-auto flex flex-col">
+        {/* Form Content Outlet */}
+        <div className="w-full max-w-md mx-auto my-auto py-2">
           <Suspense fallback={<PageLoader />}>
             <Outlet />
           </Suspense>
         </div>
         
         {/* Footer */}
-        <div className="absolute bottom-8 left-0 right-0 text-center">
-          <p className="text-xs text-gray-400">
-            © {new Date().getFullYear()} Business Management System. All rights reserved.
+        <div className="w-full max-w-md mx-auto mt-8 pt-4 border-t border-slate-200/60 dark:border-slate-800/80 text-center">
+          <p className="text-xs text-slate-400 dark:text-slate-500">
+            © {new Date().getFullYear()} Business Management System. Built with enterprise security & RBAC.
           </p>
         </div>
       </div>
 
-      {/* Right Column: Marketing / Testimonial (Hidden on mobile) */}
-      <div className="hidden lg:flex w-1/2 bg-gradient-to-br from-primary-900 via-primary-800 to-slate-900 p-16 flex-col justify-center relative overflow-hidden text-white">
+      {/* Right Column: Hero Visual Showcase (Desktop) */}
+      <div className="hidden lg:flex flex-1 bg-[#0b1120] p-12 xl:p-16 flex-col justify-between relative overflow-hidden text-white border-l border-white/5">
         
-        {/* Decorative background blur */}
-        <div className="absolute top-0 right-0 -mr-20 -mt-20 w-96 h-96 bg-primary-500/20 rounded-full filter blur-3xl" />
-        <div className="absolute bottom-0 left-0 -ml-20 -mb-20 w-96 h-96 bg-blue-400/20 rounded-full filter blur-3xl" />
+        {/* Ambient Gradient Glows */}
+        <div className="absolute top-0 right-0 -mr-20 -mt-20 w-[500px] h-[500px] bg-blue-600/15 rounded-full filter blur-[100px] pointer-events-none" />
+        <div className="absolute bottom-0 left-0 -ml-20 -mb-20 w-[500px] h-[500px] bg-indigo-600/15 rounded-full filter blur-[100px] pointer-events-none" />
 
-        <div className="relative z-10 max-w-xl mx-auto space-y-8">
-          <h1 className="text-4xl xl:text-5xl font-extrabold leading-[1.15] tracking-tight">
-            Manage your business from one powerful platform.
-          </h1>
-          
-          <p className="text-lg text-primary-100 font-medium leading-relaxed max-w-md">
-            Centralize employees, customers, suppliers, products, inventory, sales, reports, and analytics in one place.
-          </p>
-
-          {/* Integration / Feature Logos */}
-          <div className="pt-10 border-t border-primary-700/60">
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-y-6 gap-x-4 text-primary-200">
-              {features.map(({ name, icon: Icon }) => (
-                <div key={name} className="flex items-center gap-2">
-                  <Icon className="w-5 h-5 text-primary-400" />
-                  <span className="text-sm font-semibold tracking-wide">{name}</span>
-                </div>
-              ))}
-            </div>
+        {/* Top Badges */}
+        <div className="relative z-10 flex items-center justify-between">
+          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/5 border border-white/10 text-xs text-slate-300 backdrop-blur-md">
+            <HiSparkles className="w-4 h-4 text-amber-400" />
+            <span>ERP System Architecture v2.4</span>
           </div>
+
+          <div className="text-xs text-slate-400 flex items-center gap-1.5">
+            <span className="w-2 h-2 rounded-full bg-emerald-400" />
+            <span>99.9% Production Uptime</span>
+          </div>
+        </div>
+
+        {/* Hero Narrative */}
+        <div className="relative z-10 max-w-lg space-y-8 my-auto">
+          <div>
+            <h1 className="text-3xl xl:text-4xl 2xl:text-5xl font-black leading-[1.18] tracking-tight text-white">
+              Complete business operations, from inventory to analytics.
+            </h1>
+            <p className="text-base text-slate-400 font-normal leading-relaxed mt-4">
+              A robust, unified enterprise system designed to streamline supply chains, transactions, staff permissions, and financial reporting.
+            </p>
+          </div>
+
+          {/* Feature Cards Grid */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
+            {enterpriseHighlights.map(({ label, desc, icon: Icon }) => (
+              <div 
+                key={label}
+                className="p-4 rounded-2xl bg-white/[0.03] border border-white/8 hover:border-white/15 hover:bg-white/[0.05] transition-all backdrop-blur-sm"
+              >
+                <div className="w-8 h-8 rounded-lg bg-blue-500/10 border border-blue-500/20 text-blue-400 flex items-center justify-center mb-2.5">
+                  <Icon className="w-4 h-4" />
+                </div>
+                <h3 className="text-sm font-bold text-white tracking-tight">{label}</h3>
+                <p className="text-xs text-slate-400 leading-snug mt-1">{desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Bottom Trust Badge */}
+        <div className="relative z-10 pt-6 border-t border-white/10 flex items-center justify-between text-xs text-slate-400">
+          <span className="flex items-center gap-2">
+            <HiShieldCheck className="w-4 h-4 text-emerald-400" />
+            PostgreSQL · Prisma ORM · JWT Auth · Multi-Role Architecture
+          </span>
+          <span className="text-slate-500 font-mono text-[11px]">BMS-PROD-LIVE</span>
         </div>
       </div>
       
