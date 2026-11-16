@@ -4,6 +4,8 @@
   "description": "Business Management System - Backend API",
   "main": "server.js",
   "scripts": {
+    "build": "npx prisma generate",
+    "postinstall": "npx prisma generate",
     "start": "node server.js",
     "dev": "nodemon server.js",
     "db:push": "npx prisma db push",
@@ -32,10 +34,10 @@
     "morgan": "^1.10.0",
     "multer": "^1.4.5-lts.1",
     "nodemailer": "^6.9.16",
+    "prisma": "^6.9.0",
     "zod": "^3.24.2"
   },
   "devDependencies": {
-    "nodemon": "^3.1.9",
-    "prisma": "^6.9.0"
+    "nodemon": "^3.1.9"
   }
 }
